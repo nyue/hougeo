@@ -1,23 +1,7 @@
 //
 // lightweight json parser and writer. special about this one is that it supports binary json as
 // specified by sideeffects' bgeo format (houdini12+).
-// 
-// todo: - transparent recasting of variants (e.g. value is int but queried as float...)
-//       - support for uniform arrays
-//       - support for ascii (read and write)
-//
-// bugs: Object::get with std::string is dodgy!
-//	the following code crashes:
-//		base::json::ObjectPtr o = base::json::Object::create();
-//		std::string testShape = "asdasd";
-//		o->append( "shape", base::json::Value::create( testShape ) );
-//		int test = 0;
-//		if( o->hasKey( "settings" ) )
-//		{
-//			test = o->get<int>("width");
-//		}
-//		std::string t = o->get<std::string>("shape");
-//
+
 #pragma once
 
 #include <iostream>
