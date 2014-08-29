@@ -5,5 +5,5 @@ set(CMAKE_DEBUG_POSTFIX "d")
 add_library( hougeo json.cpp json.h types.h )
 
 # additional include directories
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/ttl )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
