@@ -2,6 +2,7 @@
 
 #include "json.h"
 #include <algorithm>
+#include <string.h>
 
 
 
@@ -1001,7 +1002,7 @@ namespace hougeo
 			return m_isUniform;
 		}
 
-		void Array::append( Value &value )
+		void Array::append( const Value &value )
 		{
 			m_values.push_back( value );
 		}
@@ -1119,7 +1120,7 @@ namespace hougeo
 			return m_values.size();
 		}
 
-		void Object::append( const std::string &key, Value &value )
+		void Object::append( const std::string &key, const Value &value )
 		{
 			m_values.insert( std::make_pair(key, value) );
 		}

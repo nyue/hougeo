@@ -540,7 +540,7 @@ namespace hougeo
 				if( numElements != 0 )
 					parser->read<T>( (T*)&data[0], numElements );
 				out << "jsonArray"<<type<<" ("<< numElements << ") [";std::flush(out);
-				for( std::vector<T>::iterator it = data.begin(); it != data.end();++it )
+				for( typename std::vector<T>::iterator it = data.begin(); it != data.end();++it )
 					out << *it << " ";std::flush(out);
 				out << "]\n";std::flush(out);
 			}
@@ -778,7 +778,7 @@ namespace hougeo
 
 			template<typename T>
 			void                     appendValue( T value );
-			void                     append( Value &value );
+			void                     append( const Value &value );
 			void                     append(ObjectPtr &object );
 			void                     append(ArrayPtr &array );
 
@@ -821,7 +821,7 @@ namespace hougeo
 
 			template<typename T>
 			void appendValue( const std::string &key, const T& value );
-			void                 append( const std::string &key, Value &value );
+			void                 append( const std::string &key, const Value &value );
 			void             append( const std::string &key, ObjectPtr object );
 			void             append( const std::string &key, ArrayPtr array );
 		//private:
