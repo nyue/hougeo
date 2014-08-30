@@ -20,10 +20,12 @@ void printLog( const std::string &path, std::ostream *out )
 
 
 
-void main(void)
+int main(void)
 {
 	printLog( std::string(TESTS_FILE_PATH)+"/test_box.bgeo", &std::cout );
 	printLog( std::string(TESTS_FILE_PATH)+"/test_volume.bgeo", &std::cout );
 	printLog( std::string(TESTS_FILE_PATH)+"/test_box.geo", &std::cout );
 	printLog( std::string(TESTS_FILE_PATH)+"/test_volume.geo", &std::cout );
+
+        return 0;
 }
