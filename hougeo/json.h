@@ -203,6 +203,7 @@ namespace hougeo
 		// Writer ==================================================
 		struct Writer
 		{
+			virtual                                   ~Writer(){};
 			virtual void                       jsonBeginArray() = 0;
 			virtual void                         jsonEndArray() = 0;
 			virtual void                         jsonBeginMap() = 0;
