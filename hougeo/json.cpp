@@ -1,9 +1,8 @@
 
 
-#include "json.h"
+#include <houio/json.h>
 #include <algorithm>
-#include <string.h>
-
+#include <cstring>
 
 
 
@@ -61,16 +60,35 @@ namespace hougeo
 				switch( uaType )
 				{
 				case Token::JID_BOOL:p->handler->uaBool( numElements, p );break;
-				case Token::JID_INT8:throw std::runtime_error( "Token::event - uniform array" );
 				case Token::JID_INT16:p->handler->uaInt16( numElements, p );break;
 				case Token::JID_INT32:p->handler->uaInt32( numElements, p );break;
 				case Token::JID_INT64:p->handler->uaInt64( numElements, p );break;
-				case Token::JID_REAL16:throw std::runtime_error( "Token::event - uniform array" );
 				case Token::JID_REAL32:p->handler->uaReal32( numElements, p );break;
 				case Token::JID_REAL64:p->handler->uaReal64( numElements, p );break;
 				case Token::JID_UINT8:p->handler->uaUInt8( numElements, p );break;
-				case Token::JID_UINT16:throw std::runtime_error( "Token::event - uniform array" );
 				case Token::JID_STRING:p->handler->uaString( numElements, p );break;
+				case Token::JID_NULL:
+				case Token::JID_MAP_BEGIN:
+				case Token::JID_MAP_END:
+				case Token::JID_ARRAY_BEGIN:
+				case Token::JID_ARRAY_END:
+				case Token::JID_FALSE:
+				case Token::JID_TRUE:
+				case Token::JID_TOKENDEF:
+				case Token::JID_TOKENREF:
+				case Token::JID_TOKENUNDEF:
+				case Token::JID_UNIFORM_ARRAY:
+				case Token::JID_KEY_SEPARATOR:
+				case Token::JID_VALUE_SEPARATOR:
+				case Token::JID_MAGIC:
+				case Token::JID_INT8:
+				case Token::JID_REAL16:
+				case Token::JID_UINT16:
+				default:
+					{
+						throw std::runtime_error( "json.cpp Token::event: error unsupported uniform array type" );
+						break;
+					}
 				};
 			}
 
@@ -504,6 +522,12 @@ namespace hougeo
 				stream->read( (char *)&s[0], l );
 			}
 
+			if( s == "constantpageflags" )
+			{
+				int debug = 0;
+				debug++;
+			}
+
 			return s;
 		}
 
@@ -520,22 +544,22 @@ namespace hougeo
 					c =  read<char>();
 					if( (c=='"')||(c=='\\')||(c=='/') )result.append(&c, 1);
 					else
-					if( c=='b' ) result += "\b";
+					if( c=='b' ) result.push_back('\b');
 					else
-					if( c=='f' ) result += "\f";
+					if( c=='f' ) result.push_back('\f');
 					else
-					if( c=='n' ) result += "\n";
+					if( c=='n' ) result.push_back('\n');
 					else
-					if( c=='r' ) result += "\r";
+					if( c=='r' ) result.push_back('\r');
 					else
-					if( c=='t' ) result += "\t";
+					if( c=='t' ) result.push_back('\t');
 					else
 					if( c=='u' )
 					{
-						std::cerr << "error\n";
 						throw std::runtime_error( "error " );
 					}else
-						result += "\\" + c;
+						result.push_back('\\');
+						result.push_back(c);
 				}else
 				if( c == '"' )
 				{
@@ -869,6 +893,7 @@ namespace hougeo
 				write( ":" );
 			}else
 			if( !stack.empty() )
+			{
 				if( (stack.top() == Token::JID_MAP_BEGIN)||
 					(stack.top() == Token::JID_ARRAY_BEGIN))
 				{
@@ -876,7 +901,10 @@ namespace hougeo
 					writeNewline();
 				}
 				else
+				{
 					write( ", " );
+				}
+			}
 		}
 
 		void ASCIIWriter::writeNewline()

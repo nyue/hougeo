@@ -1,7 +1,23 @@
 //
 // lightweight json parser and writer. special about this one is that it supports binary json as
 // specified by sideeffects' bgeo format (houdini12+).
-
+// 
+// todo: - transparent recasting of variants (e.g. value is int but queried as float...)
+//       - support for uniform arrays
+//       - support for ascii (read and write)
+//
+// bugs: Object::get with std::string is dodgy!
+//	the following code crashes:
+//		base::json::ObjectPtr o = base::json::Object::create();
+//		std::string testShape = "asdasd";
+//		o->append( "shape", base::json::Value::create( testShape ) );
+//		int test = 0;
+//		if( o->hasKey( "settings" ) )
+//		{
+//			test = o->get<int>("width");
+//		}
+//		std::string t = o->get<std::string>("shape");
+//
 #pragma once
 
 #include <iostream>
@@ -10,10 +26,11 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <algorithm>
 
-#include "types.h"
+#include <houio/types.h>
+#include <ttl/var/variant.hpp>
 
-#include "ttl/var/variant.hpp"
 
 
 
@@ -543,7 +560,7 @@ namespace hougeo
 				out << "jsonArray"<<type<<" ("<< numElements << ") [";std::flush(out);
 				for( typename std::vector<T>::iterator it = data.begin(); it != data.end();++it )
 					out << *it << " ";std::flush(out);
-				out << "]\n";std::flush(out);
+				out << "]---\n";std::flush(out);
 			}
 
 			std::ostream &out;
@@ -779,6 +796,7 @@ namespace hougeo
 
 			template<typename T>
 			void                     appendValue( T value );
+			//void                     append( Value &value );
 			void                     append( const Value &value );
 			void                     append(ObjectPtr &object );
 			void                     append(ArrayPtr &array );
