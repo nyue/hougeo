@@ -4,7 +4,7 @@
 #include <stdint.h>
 #endif
 
-namespace houio
+namespace hougeo
 {
 
 #if (defined _MSC_VER)
