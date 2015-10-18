@@ -60,6 +60,7 @@ namespace hougeo
 				switch( uaType )
 				{
 				case Token::JID_BOOL:p->handler->uaBool( numElements, p );break;
+				case Token::JID_INT8:p->handler->uaInt8( numElements, p );break;
 				case Token::JID_INT16:p->handler->uaInt16( numElements, p );break;
 				case Token::JID_INT32:p->handler->uaInt32( numElements, p );break;
 				case Token::JID_INT64:p->handler->uaInt64( numElements, p );break;
@@ -81,7 +82,6 @@ namespace hougeo
 				case Token::JID_KEY_SEPARATOR:
 				case Token::JID_VALUE_SEPARATOR:
 				case Token::JID_MAGIC:
-				case Token::JID_INT8:
 				case Token::JID_REAL16:
 				case Token::JID_UINT16:
 				default:
@@ -1280,6 +1280,11 @@ namespace hougeo
 		void JSONReader::uaReal64( sint64 numElements, Parser *parser )
 		{
 			jsonUA<real64, real64>(numElements, parser);
+		}
+
+		void JSONReader::uaInt8( sint64 numElements, Parser *parser )
+		{
+			jsonUA<sint32, sbyte>(numElements, parser);
 		}
 
 		void JSONReader::uaInt16( sint64 numElements, Parser *parser )
